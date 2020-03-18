@@ -1,15 +1,15 @@
 package itemsreplenishment.events;
 
-import itemsreplenishment.DummyProxy;
+import com.amazonaws.services.stepfunctions.AWSStepFunctions;
 import itemsreplenishment.module.ServiceComponent;
 
 import static org.mockito.Mockito.mock;
 
 public class FakeServiceComponent implements ServiceComponent {
-    private final DummyProxy dummyProxy = mock(DummyProxy.class);
+    private final AWSStepFunctions awsStepFunctions = mock(AWSStepFunctions.class);
 
     @Override
-    public DummyProxy getDummyProxy() {
-        return dummyProxy;
+    public AWSStepFunctions getAWSStepFunctions() {
+        return awsStepFunctions;
     }
 }

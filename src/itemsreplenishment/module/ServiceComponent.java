@@ -1,13 +1,13 @@
 package itemsreplenishment.module;
 
+import com.amazonaws.services.stepfunctions.AWSStepFunctions;
 import dagger.Component;
-import itemsreplenishment.DummyProxy;
 
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = {DummyModule.class})
+@Component(modules = {AwsModule.class})
 public interface ServiceComponent {
 
-    DummyProxy getDummyProxy();
+    AWSStepFunctions getAWSStepFunctions();
 }

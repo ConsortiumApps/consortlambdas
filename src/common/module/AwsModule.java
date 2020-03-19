@@ -1,4 +1,4 @@
-package itemsreplenishment.module;
+package common.module;
 
 import com.amazonaws.services.stepfunctions.AWSStepFunctions;
 import com.amazonaws.services.stepfunctions.AWSStepFunctionsClientBuilder;
@@ -14,4 +14,6 @@ public class AwsModule {
     static AWSStepFunctions provideAWSStepFunctionsClient() {
         return AWSStepFunctionsClientBuilder.standard().build();
     }
+
+
 }

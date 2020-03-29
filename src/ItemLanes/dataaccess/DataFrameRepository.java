@@ -3,7 +3,6 @@ package ItemLanes.dataaccess;
 import java.util.List;
 
 import ItemLanes.model.DataFrame;
-import ItemLanes.model.data.DataFramesTable;
 
 public interface DataFrameRepository {
 

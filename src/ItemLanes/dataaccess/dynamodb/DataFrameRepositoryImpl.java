@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import ItemLanes.dataaccess.DataFrameRepository;
 import ItemLanes.model.DataFrame;
-import ItemLanes.model.data.DataFramesTable;
+import ItemLanes.model.data.DataFramesRecord;
 import lombok.AllArgsConstructor;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -30,33 +30,34 @@ public class DataFrameRepositoryImpl implements DataFrameRepository {
 
     @Override
     public List<DataFrame> getMostRecentDataFrames(String dataSourceName) {
-        DataFramesTable dataFramesTable = DataFramesTable.builder()
+        DataFramesRecord dataFramesRecord = DataFramesRecord.builder()
                 .dataSourceName(dataSourceName)
                 .build();
         Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GE.toString())
                 .withAttributeValueList(new AttributeValue().withS(LocalDateTime.now()
                         .minusDays(2)
                         .toString()));
-        final DynamoDBQueryExpression<DataFramesTable> queryExpression =
-                new DynamoDBQueryExpression<DataFramesTable>().withHashKeyValues(dataFramesTable)
+        final DynamoDBQueryExpression<DataFramesRecord> queryExpression =
+                new DynamoDBQueryExpression<DataFramesRecord>().withHashKeyValues(dataFramesRecord)
+                        .withScanIndexForward(false)
                         .withRangeKeyCondition("captureDateTime", rangeKeyCondition);
-        return dynamoDBMapper.query(DataFramesTable.class, queryExpression)
+        return dynamoDBMapper.query(DataFramesRecord.class, queryExpression)
                 .stream()
                 .map(dft -> DataFrame.builder()
+                        .creationDateTime(dft.getCaptureDateTime())
                         .dataSource(dft.getDataSourceName())
-                        .frameId(dft.getCaptureDateTime())
+                        .frameId(dft.getDataFrameId())
                         .build())
                 .collect(Collectors.toList());
     }
 
     @Override
     public void saveDataFrame(DataFrame dataFrame) {
-        DataFramesTable dataFramesTable = DataFramesTable.builder()
-                .captureDateTime(LocalDateTime.now()
-                        .toString())
+        DataFramesRecord dataFramesRecord = DataFramesRecord.builder()
+                .captureDateTime(LocalDateTime.now())
                 .dataSourceName(dataFrame.getDataSource())
                 .dataFrameId(dataFrame.getFrameId())
                 .build();
-        dynamoDBMapper.save(dataFramesTable);
+        dynamoDBMapper.save(dataFramesRecord);
     }
 }

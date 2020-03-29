@@ -1,4 +1,4 @@
-package ItemLanes.model;
+package common.model;
 
 import lombok.Builder;
 import lombok.Data;

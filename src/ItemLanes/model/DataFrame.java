@@ -1,5 +1,6 @@
 package ItemLanes.model;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,9 @@ import lombok.Data;
 @Builder
 public class DataFrame {
 
-    private final String frameId;
-    private final String dataSource;
+  public static final String DATA_FRAME_SEPARATOR = "_";
+  private final String frameId;
+  private final String dataSource;
+  private final LocalDateTime creationDateTime;
+
 }
